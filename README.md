@@ -1,2 +1,106 @@
-# stress_drop
+
+--------------------------------------------------------------------------------------
+Estimating stress drop using the generalized inversion technique (GIT).
+--------------------------------------------------------------------------------------
+
+Working directory: /Users/emmadevin/Work/USGS_2021/Data/ == ~/
  
+QA processing takes place in ~/gmprocess
+GIT takes place in ~/dataset_name
+
+Initial set up of directories is as follows:
+ 
+gmprocess:
+~/gmprocess
+|
++-- event_downloads
+|  	|
+|  	+-- conf
+|  	|	  |
+|  	|	  +-- config.yml
+|	  +-- data
+|
++-- qa_processing
+	  |
+  	+-- conf
+  	|	  |
+  	|	  +-- config.yml
+  	+-- data
+
+
+	dataset:
+		~/dataset_name
+			|
+			+-- event_files
+			|
+			+-- station_data
+			|
+			+-- RC_beta
+			|
+			+-- RC_phase_beta
+			  	|
+		  		+-- eventid.phase
+
+			
+ 
+	code:
+		/Users/emmadevin/Documents/GitHub/stress_drop
+			|
+			+-- set_up
+			|	  |
+			|	  +-- cp_event_files.py
+			|	  |
+			|	  +-- cp_eventjson.py
+			|	  |
+			|	  +-- cp_events.py
+			|	  |
+			|	  +-- cp_stn_files.py
+			|  	|
+			|  	+-- create_event_dirs.py
+			|  	|
+			|	  +-- h5_to_mseed.py
+			|
+			+-- station_info
+			|	  |
+			|	  + stations.py
+			|
+			+-- event_info
+			|	  |
+			|	  + event_info.py
+			|	
+			+-- GIT
+      |
+      +-- step1_compute_spectra.py
+      |
+      +-- step2_secondo_meters.py
+      |
+      +-- step3_findBrune_trapezoids.py
+      |
+      +-- step4_secondo_constraint.py
+      |
+      +-- step5_fitBrune.py
+
+
+STEPS
+
+1.	Use create_event_dirs.py to create event directories for the dataset in both:
+    a.	~/gmprocess/event_downloads/data/
+    b.	~/dataset/RC_beta/
+2.	Use cp_events.py to copy original event data from its directory into the ~/gmprocess/qa_processing directory. 
+3.	Download event.json files
+      a.	Enter ~/gmprocess/event_downloads directory and initialize gmprocess project. 
+      b.	Set config.yml file downloader to very small radius in degrees (may have to do this more than once, weird stuff goes on with these *.yml files
+      c.	Run >>gmrecords download 
+      d.	This will download event data for each event into its raw folder and an event.json file for each event.  All we need from this download is that event.json          file.  
+4.	Use cp_eventjson.py to copy event.json files from event_downloads to their corresponding event directory in ~/gmprocess/qa_processing/data.
+5.	Use cp_stn_files.py to copy station *.xml files from ~/gmprocess/station_downloads/station_files into each event raw directory in ~/gmprocess/qa_processing/data.  
+6.	Process dataset
+    a.	Enter ~/gmprocess/qa_processing/ and initialize gmprocess.
+    b.	Set up config.yml file as desired for QA.
+    c.	Run >>gmrecords assemble
+    d.	Run >>gmrecords process
+    e.	Result is a *.h5 file in each event directory containing all waveforms and information about whether they passed our tests.  
+7.	Use h5_to_mseed.py to read *.h5 files and write all waveforms that passed QA screening to event directories in ~/dataset/RC_beta/. NOTE: This python script must be run INSIDE an instance of gmprocess from command line!
+8.	Use stations.py to create *.csv file containing list of stations, locations, and how many times each station appears in the dataset. Records from stations that appear less than 3 times will be discarded in a later step.  
+9.	
+

@@ -6,7 +6,7 @@
 Use the generalized inversion technique to estimate stress drop for the 2019 Ridgecrest sequence.  Original data is downloaded from Community Stress Drop Validation Study.  gmprocess is used to download station files, event files, and then run QA on original data.  Code from Klimasewski et al. (2019) is then used to run GIT.
 
 ### Initial set up of directories is as follows:
-Working directory: `/Users/emmadevin/Work/USGS_2021/Data/`  henceforth denoted as `~/`\
+Working directory henceforth denoted as `~/`\
 QA processing takes place in `~/gmprocess`\
 GIT takes place in `~/dataset_name`
  
@@ -46,7 +46,7 @@ GIT takes place in `~/dataset_name`
 ### Locations of code: 
 
 ```bash
-        ~/Users/emmadevin/Documents/GitHub/stress_drop/
+        /GitHub/stress_drop/
                 |
                 +-- set_up
                 |	  |

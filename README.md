@@ -102,7 +102,7 @@ b. `~/dataset/RC_beta/`
     c.	Run `>>gmrecords assemble`.\
     d.	Run `>>gmrecords process`.\
     e.	Result is a `*.h5` file in each event directory containing all waveforms and information about whether they passed our tests.  
-7.	Use `h5_to_mseed.py` to read `*.h5` files and write all waveforms that passed QA screening to event directories in `~/dataset/RC_beta/`. **NOTE**: This python script must be run INSIDE an instance of gmprocess from command line!
+7.	Use `extract_tr.py` to read `*.h5` files and write all waveforms that passed QA screening to event directories in `~/dataset/processing/`. **NOTE**: This python script must be run INSIDE an instance of gmprocess from command line!
 8.	Use `cp_event_files.py` to copy event `*.txt` files into `~/dataset/event_files`.
 9.	Use `stations.py` to create `*.csv` file containing list of stations, locations, and how many times each station appears in the dataset. Records from stations that appear less than 3 times will be discarded in a later step.  This file goes in `~/dataset/station_data`.
 10.	Inversion:\

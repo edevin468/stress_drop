@@ -1,12 +1,23 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Wed Jul 14 11:45:14 2021
-
 @author: emmadevin
+
+Originally written by Alexis Klimasewski.
+Modified for use in Ridgecrest stress drop project by Emma Devin:
+- reads our dataset which is slightly different in format
+- takes our station meta data which is organized differently
+
+inputs: record spectra from mtspec, *.csv file containing station meta data (locations, counts, etc.)
+
+    performs Andrews inversion to obtain event and station spectra from record spectra
+    
+outputs: station and event spectra in Andrews_inversion directory folders
+
 """
 
 import glob
+import os
 import os.path as path
 import numpy as np
 import obspy
@@ -26,52 +37,74 @@ plt.style.use('classic')
 #make list of records and the corresponding events and stations
 
 # working directory and outfil path for inversion
-working_dir = '/Users/emmadevin/Work/USGS 2021/Data/Prelim_filtered'
+working_dir = '/Users/emmadevin/Work/USGS_2021/Data/Prelim_qa_filtered'
 outfile_path = working_dir + '/Andrews_inversion'
 
 # df with station locations
 # use station_locs.csv to include uncorrected stations
-stations = pd.read_csv(working_dir + '/Station_info/station_counts.csv') 
+stations = pd.read_csv(working_dir + '/station_data/station_counts.csv') 
 
 # df with station counts
-counts = pd.read_csv(working_dir + '/Station_info/station_counts.csv')
+counts = pd.read_csv(working_dir + '/station_data/station_counts.csv')
 
-#list of record files
-ev = glob.glob(working_dir + '/record_spectra/*/*')
+# list of events
+events = glob.glob(working_dir + '/record_spectra/*')
 
-stn_id_list = []
+
+
+
+
+
+# discard all events with less than 10 records
+for event in events:
+    ev_id = path.basename(event)
+    num = len(glob.glob(working_dir +'/record_spectra/' + ev_id + '/*'))
+    print(ev_id + '-' + str(num))
+    
+    if num < 10: 
+        events.remove(event)
+        print('Event '+ ev_id + ' removed.')
+
+
+# list of record files
+rl = []
+for event in events:
+    records = glob.glob(event + '/*')
+    for record in records: rl.append(record)
+    
 
 # discard all records from stations with less that 3 records
-for record in ev:
+stn_id_list = []
+for record in rl:
     filename = (record.split('/')[-1])
     base = path.basename(record)
     stn = base.split('_')[1]
     ntwk = base.split('_')[0]
     
-    stns = list(counts['station'])
-    ntwks = counts['network']
+    stns = list(counts['Station'])
+    ntwks = counts['#Network']
     
     index = stns.index(stn)
-    count_list = counts['count']
+    count_list = counts['Count']
     count = count_list[index]
     
  
     if count < 3: 
-        ev.remove(record)
+        rl.remove(record)
         
     if count >= 3:
-       stn_id = ntwk+stn
-       if stn_id not in stn_id_list:
-           stn_id_list.append(stn_id)
+        stn_id = ntwk+stn
+        if stn_id not in stn_id_list:
+            stn_id_list.append(stn_id)
         
-record_path = ev
+record_path = rl
 print('Number of records: ', len(record_path))
    
 
 # get lists of station ids and station locations
-stn_list = (stations['network']+stations['station']).tolist()
-stn_lat = stations['latitude']
-stn_lon = stations['longitude']
+stn_list = (stations['#Network']+stations['Station']).tolist()
+stn_lat = stations['Latitude']
+stn_lon = stations['Longitude']
 
 
 eventidlist = []
@@ -91,6 +124,7 @@ for i in range(len(record_path)):
     base = path.basename(record)
     eventid = base.split('_')[-1]
     eventid = eventid.split('.')[0]
+    eventid = eventid[2:]
     ntwk = base.split('_')[0]
     stn = base.split('_')[1]
     stn_id = ntwk + stn
@@ -169,6 +203,8 @@ for i in range(len(record_path)):
     stnid = network+station
     eventid = base.split('_')[-1]
     eventid = eventid.split('.')[0]
+    eventid = eventid[2:]
+    
     
     print(network, station)
     print(eventid)
@@ -274,12 +310,12 @@ for i in range(I):#for each event
     np.savetxt(outfile, out, fmt=['%E', '%E', '%E'], delimiter='\t')
     outfile.close()
     
-    # df = pd.DataFrame(out)
-    # plt.plot(df[0],df[1])
-    # plt.xscale('log')
-    # plt.yscale('log')
-    # plt.xlabel('frequency (Hz)')
-    # plt.ylabel('spectra')
+    df = pd.DataFrame(out)
+    plt.plot(df[0],df[1], c = 'r')
+    plt.xscale('log')
+    plt.yscale('log')
+    plt.xlabel('frequency (Hz)')
+    plt.ylabel('velocity amplitude')
     
     
 
@@ -305,12 +341,12 @@ for i in range(J):#for each station
     
     df = pd.DataFrame(out)
     
-    # plt.plot(df[0],df[1])
-    # plt.xscale('log')
-    # plt.yscale('log')
-    # plt.xlabel('frequency (Hz)')
-    # plt.ylabel('spectra')
-    # plt.xlim(10**-3,10**2)
+    plt.plot(df[0],df[1], c = 'r')
+    plt.xscale('log')
+    plt.yscale('log')
+    plt.xlabel('frequency (Hz)')
+    plt.ylabel('velocity amplitude')
+    plt.xlim(10**-1,10**2)
     
 
 

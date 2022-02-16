@@ -1,9 +1,16 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Tue Oct  5 09:36:08 2021
-
 @author: emmadevin
+
+inputs: all constrained event spectra
+
+    use nonlinear least squares to fit the Brune model to all constrained event spectra
+    finding best fit moment and corner frequency
+    again trimming to frequency range
+    use M0 and fc to calculate stress drop
+    
+outputs: list of best fit corner frequencies, moments, stress drops and respective standard deviations for each event
 """
 
 import numpy as np
@@ -40,7 +47,7 @@ def residual(params, freq, spec, sigma):
 # plt.style.use('classic')
 # fig.patch.set_facecolor('white')
 
-working_dir =  '/Users/emmadevin/Work/USGS 2021/Data/Prelim_filtered'
+working_dir =  '/Users/emmadevin/Work/USGS_2021/Data/Prelim_qa_filtered'
 outfile_path = working_dir + '/stress_drops'
 
 # define list of filepaths for all constrained event spectra
@@ -192,7 +199,7 @@ for i in range(len(event_list)):
     plt.ylabel('velocity amplitude (m)')
     plt.xlabel('frequncy (Hz)')
     # plt.title('(' + letters[i] + ') event: '+ id_list[i]+', M'+str(mag_list[i]), loc = 'left', fontsize = 11)
-    plt.legend(loc='lower center', ncol=1)
+    # plt.legend(loc='lower center', ncol=1)
     # plt.grid()
     
     plt.savefig(working_dir + '/fc_fitting_plots/' + id_list[i] + '.png', bbox_inches='tight')
@@ -209,6 +216,6 @@ df['std fc'] = fc_std_list
 df['std sd']  = sd_std_list
 
 
-# df.to_csv(outfile_path + '/stress_drops_prelim_filtered.csv')
+df.to_csv(outfile_path + '/stress_drops_prelim_qa.csv')
     
     

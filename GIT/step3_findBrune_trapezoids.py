@@ -1,14 +1,21 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Mon Aug  7 09:53:15 2017
+@author: emmadevin
 
-@author: Alexis Klimasewski
+Originally written by Alexis Klimasewski.
+Modified for use in Ridgecrest stress drop project by Emma Devin:
+- changed magnitude range
+- trim spectra to specified frequency range
+- change to trapezoid integration method to find spectra closest in shape to Brune model
 
-compute “B” for a M3 earthquake, and then for every ~M3 earthquake
-in your dataset (call it “A”), find A/B for every frequency range you inverted for.  
-Then sum up A/B over all frequency ranges and find which earthquake has the minimum value for that
-because then that would suggest that earthquake is closest to a brune spectrum
+inputs: event spectra from inversion
+
+    uses trapezoid integration to find event spectra shaped most like the Brune model
+    saves that event as constrain funtion to be applied to all station and event spectra
+    
+outputs: constraint
+
 """
 
 import glob
@@ -23,7 +30,7 @@ stressdrop = 5e6 #5e6 pascals
 U = 0.63#0.63
 rho = 2750. #2750kg/m^3
 
-working_dir =  '/Users/emmadevin/Work/USGS 2021/Data/Prelim_filtered'
+working_dir =  '/Users/emmadevin/Work/USGS_2021/Data/Prelim_qa_filtered'
 event_spectra_dir = working_dir + '/Andrews_inversion/Events/'
 event_list = glob.glob(event_spectra_dir + '*.out')
 

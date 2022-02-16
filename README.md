@@ -3,7 +3,7 @@
 # Stress Drop with GIT
 
 #### Purpose:
-Use the generalized inversion technique to estimate stress drop for the 2019 Ridgecrest sequence.  Original data is downloaded from Community Stress Drop Validation Study.  gmprocess is used to download station files, event files, and then run QA on original data.  Code from Klimasewski et al. (2019) is then used to run GIT.
+Use the generalized inversion technique to estimate stress drop for the 2019 Ridgecrest sequence.  Original data is downloaded from Community Stress Drop Validation Study.  gmprocess is used to download station files, event files, and then run QA on original data.  Code modified from Klimasewski et al. (2019) is then used to run GIT.
 
 ### Initial set up of directories is as follows:
 Working directory henceforth denoted as `~/`\

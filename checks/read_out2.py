@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Fri Jul  2 11:11:43 2021
-
 @author: emmadevin
+
+make plots of spectra from various places
+watch out for std devs: must be in log space or will not plot nicely
 """
 
 import numpy as np

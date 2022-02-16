@@ -1,6 +1,8 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 """
+@author: emmadevin
+
 Originally written by Alexis Klimasewski.
 Modified for use in Ridgecrest stress drop project by Emma Devin:
 - uses both N and E channels 

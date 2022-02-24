@@ -1,9 +1,16 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Wed Feb  2 15:44:20 2022
-
 @author: emmadevin
+
+***this script must be run inside gmprocess in order to use the StreamWorkspace module***
+
+inputs: *.h5 files for each event from gmprocess that contain processed waveforms and tells whether or not waveforms passed QA
+
+    saves all waveforms that passed QA as text files (*.out) for each channel into event folders
+
+outputs: *.out text files in the processed directory
+
 """
 
 import matplotlib.pyplot as plt
@@ -20,7 +27,7 @@ import time
 from gmprocess.io.asdf.stream_workspace import StreamWorkspace
 
 #working directory here
-working = '/Users/emmadevin/Work/USGS_2021/Data/gmprocess/qa_processing_test6/data'
+working = '/Users/emmadevin/Work/USGS_2021/Data/gmprocess/qa_processing_test8/data'
 outpath = '/Users/emmadevin/Work/USGS_2021/Data/Prelim_qa_filtered/processed'
 
 events = glob.glob(working + '/*')

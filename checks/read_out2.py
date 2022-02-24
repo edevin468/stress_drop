@@ -18,8 +18,8 @@ import glob
 
  
     
-# path = glob.glob('/Users/emmadevin/Work/USGS_2021/Data/Prelim_qa_filtered/record_spectra/ci38548295/*.out')
-path = glob.glob('/Users/emmadevin/Work/USGS_2021/Data/Prelim+/record_spectra/38548295/*.out')
+path = glob.glob('/Users/emmadevin/Work/USGS_2021/Data/Prelim_qa_filtered/record_spectra/ci38548295/*.out')
+# path = glob.glob('/Users/emmadevin/Work/USGS_2021/Data/Prelim+/record_spectra/38548295/*.out')
 # path = glob.glob('/Users/emmadevin/Work/USGS_2021/Data/Prelim_qa_filtered/Andrews_inversion/Events/*.out')
 
 
@@ -39,12 +39,12 @@ for i in range(len(path)):
     plt.style.use('classic')
     fig.patch.set_facecolor('white')
     plt.plot(freq, spectra, lw=1,c= 'k')
-    plt.errorbar(freq, spectra, yerr = spec_err, c='k')
+    plt.errorbar(freq, spectra, yerr = spec_err_log, c='k')
     plt.title('', loc='left')
     # plt.xlim(0.04, 50)
     # plt.ylim(10**-8,10**2)
     plt.xscale('log')
-    # plt.yscale('log')
+    plt.yscale('log')
     plt.xlabel('frequency (Hz)')
     plt.ylabel('velocity amplitude (m)')
     

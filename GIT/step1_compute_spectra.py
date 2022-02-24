@@ -89,12 +89,20 @@ for event in events:
             # if evenly sampled
             if(len(spec_array_E)==len(spec_array_N)):
     
-                # here we bin into evenly spaced bins with frequency
-                #spectra is power spectra so add the two components
-                data_NE_2 = spec_array_E + spec_array_N
-                #now data is NE power spectra
-                #take the square root for normal velocity spectra
+                # # here we bin into evenly spaced bins with frequency
+                
+                
+                # #spectra is power spectra so add the two components
+                # data_NE_2 = spec_array_E + spec_array_N
+                # #now data is NE power spectra
+                # #take the square root for normal velocity spectra
+                # data_NE = np.sqrt(data_NE_2)
+                
+                # log average of components
+                data_NE_2 = np.exp((np.log(spec_array_E)+np.log(spec_array_N))/2)
                 data_NE = np.sqrt(data_NE_2)
+                
+                
 
                 sigma = np.sqrt((spec_array_N/data_NE**2.)*sigmaN + ((spec_array_N/data_NE**2.)*sigmaN))
                 

@@ -26,6 +26,7 @@ REQUIREMENTS: (in addition to usual python libraries)
     dread
 
 """
+from setup_fns import *
 from stress_drop_fns import *
 
 # define working directory name
